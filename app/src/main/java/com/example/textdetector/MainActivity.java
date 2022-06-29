@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         detectBtn = (Button) findViewById(R.id.detectbtn);
 
         // copy text to clipboard
-        copy = findViewById(R.id.copy);
+        ImageButton copy = findViewById(R.id.copy);
         copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +74,20 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this,"Copied",Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        //  share option
+        ImageButton share = findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s = textview.getText().toString();
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, s);
+                startActivity(Intent.createChooser(sharingIntent, "Share text via"));
             }
         });
 
