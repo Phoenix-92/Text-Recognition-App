@@ -2,6 +2,9 @@ package com.example.textdetector;
 
 import static android.Manifest.permission.CAMERA;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textview;
     private Button snapBtn;
     private Button detectBtn;
+    private Button copy;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     // variable for our image bitmap.
@@ -49,11 +53,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // hide action bar
+        getSupportActionBar().hide();
+
         // on below line we are initializing our variables.
         img = (ImageView) findViewById(R.id.image);
         textview = (TextView) findViewById(R.id.text);
         snapBtn = (Button) findViewById(R.id.snapbtn);
         detectBtn = (Button) findViewById(R.id.detectbtn);
+
+        // copy text to clipboard
+        copy = findViewById(R.id.copy);
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Text",textview.getText().toString());
+                clipboard.setPrimaryClip(clip);
+
+                Toast.makeText(MainActivity.this,"Copied",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
         // adding on click listener for detect button.
         detectBtn.setOnClickListener(new View.OnClickListener() {
